@@ -38,7 +38,6 @@ public class TreeDTO {
                    String latitude, String longitude, String pid,
                    String imgid, String imgloc){
         this.tid = tid;
-        this.tid = tid;
         this.dist = dist;
         this.dbh = dbh;
         this.height = height;
@@ -47,5 +46,16 @@ public class TreeDTO {
         this.pid = pid;
         this.imgid = imgid;
         this.imgloc = imgloc;
+    }
+    public TreeDTO(String tid, String dist, String dbh, String height){
+        this.tid = tid;
+        this.dist = dist;
+        this.dbh = dbh;
+        this.height = height;
+        this.longitude = "";
+        this.latitude = "";
+        this.pid = "";
+        this.imgid = "";
+        this.imgloc = "";
     }
 }
