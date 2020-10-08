@@ -28,7 +28,7 @@ public class TreeService {
     @Transactional
     public String save(TreeDTO treeDTO)
     {
-        return treeRepository.save(treeDTO.toEntity()).getTid();
+        return treeRepository.save(treeDTO.toEntity()).toString();
     }
 
     public void updateByTid(String tid, String evolume){

@@ -36,8 +36,8 @@ public class TreeController {
 
     @PostMapping("/save")
     public String save(@RequestBody TreeDTO tree){
-        treeService.save(tree);
-        return tree.toString();
+        String msg = treeService.save(tree);
+        return msg;
     }
 
 
