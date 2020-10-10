@@ -1,5 +1,6 @@
 package com.tree.f2st.service;
 
+import com.sun.source.tree.Tree;
 import com.tree.f2st.dto.TreeDTO;
 import com.tree.f2st.entity.TreeEntity;
 import com.tree.f2st.repository.TreeRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +33,11 @@ public class TreeService {
         return treeRepository.save(treeDTO.toEntity()).toString();
     }
 
-    public void updateByTid(String tid, String evolume){
-        List<TreeEntity> e = treeRepository.findByTid(tid);
-        //if(e.)
+    public  List<TreeEntity> findByTid(String tid){
+        List<TreeEntity> t = new ArrayList<>();
+        treeRepository.findByTid(tid).forEach(e->t.add(e));
+        return t;
     }
-
 
 
 //
