@@ -29,25 +29,22 @@ public class TreeController {
         return "index.html";
     }
 
+    @RequestMapping(value = "/map/{tid}")
+    public String detail(Model model, @PathVariable("tid") String tid){
+        model.addAttribute("treeList",treeService.findAll());
+        model.addAttribute("detail", treeService.findByTid(tid));
+        return "index.html";
+    }
+
+
     //모든 나무 조회
     @GetMapping(value="/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<TreeEntity>> getAlltrees(){
         List<TreeEntity> tree = treeService.findAll();
         return new ResponseEntity<List<TreeEntity>>(tree, HttpStatus.OK);
     }
-//    @GetMapping(value="/", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public @ResponseBody String getAlltrees(Model model){
-//        List<TreeEntity> treeList = treeService.findAll();
-//        model.addAttribute("treeList",treeList);
-//        return Integer.toString(treeList.size());
-//    }
 
-//    //나무 등록 번호로 하나의 나무 조회
-//    @GetMapping(value="/{treeNo}", produces = { MediaType.APPLICATION_JSON_VALUE })
-//    public ResponseEntity<TreeEntity> getTree(@PathVariable("treeNo") Long treeNo){
-//        Optional<TreeEntity> tree = treeService.findbyTreeNo(treeNo);
-//        return new ResponseEntity<TreeEntity>(tree.get(), HttpStatus.OK);
-//    }
+    //나무 등록 번호로 하나의 나무 조회
     @GetMapping(value="/{tid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public @ResponseBody ResponseEntity< List<TreeEntity>> getTree(@PathVariable("tid") String tid){
         List<TreeEntity> tree = treeService.findByTid(tid);

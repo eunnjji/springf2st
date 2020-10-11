@@ -34,13 +34,14 @@ public class TreeDTO {
         return treeEntity;
     }
     @Builder
-    public TreeDTO(String tid, String dist, String dbh, String height){
+    public TreeDTO(String tid, String dist, String dbh, String height,
+                   String longitude, String latitude){
         this.tid = tid;
         this.dist = dist;
         this.dbh = dbh;
         this.height = height;
-        this.longitude = "";
-        this.latitude = "";
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.pid = "";
         this.imgid = "";
         this.imgloc = "";

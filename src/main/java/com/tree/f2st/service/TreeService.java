@@ -48,11 +48,11 @@ public class TreeService {
 //        }
 //    }
 
-//    public void deleteByTid(String tid){
-//        List<TreeEntity> trees = treeRepository.findByTid(tid);
-//        trees.forEach(e->treeRepository.delete(e));
-//        treeRepository.flush();
-//    }
+    public void deleteByTid(String tid){
+        List<TreeEntity> trees = treeRepository.findByTid(tid);
+        trees.forEach(e->treeRepository.delete(e));
+        treeRepository.flush();
+    }
 
 
 }

@@ -19,7 +19,7 @@
 //
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/webfist/map").setViewName("map");
+//        registry.addViewController("/webfist/mapJs").setViewName("mapJs");
 //    }
 //}
 //
