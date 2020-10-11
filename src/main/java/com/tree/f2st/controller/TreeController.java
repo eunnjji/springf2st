@@ -4,7 +4,12 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.tree.f2st.dto.TreeDTO;
 import com.tree.f2st.entity.TreeEntity;
 import com.tree.f2st.service.TreeService;
+import com.tree.f2st.util.ExcelUtil;
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +65,22 @@ public class TreeController {
         return msg;
     }
 
+    //.xlsx file download
+    @GetMapping(value = "/download")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "fist.xlsx";
+        InputStreamResource file = new InputStreamResource(treeService.load());
 
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
+    }
+//    public void downloadXlsx(HttpServletResponse response) throws IOException{
+//        response.setContentType("application/octet-stream");
+//        response.setHeader("Content-Disposition", "attachment; filename=fist.xlsx");
+//        ByteArrayInputStream stream = ExcelUtil.ListToExcelFile(treeService.findAll());
+//        IOUtils.copy(stream, response.getOutputStream());
+//    }
 
 }

@@ -4,11 +4,13 @@ import com.sun.source.tree.Tree;
 import com.tree.f2st.dto.TreeDTO;
 import com.tree.f2st.entity.TreeEntity;
 import com.tree.f2st.repository.TreeRepository;
+import com.tree.f2st.util.ExcelUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,13 @@ public class TreeService {
         List<TreeEntity> trees = treeRepository.findByTid(tid);
         trees.forEach(e->treeRepository.delete(e));
         treeRepository.flush();
+    }
+
+
+    public ByteArrayInputStream load() {
+        List<TreeEntity> trees = treeRepository.findAll();
+        ByteArrayInputStream in = ExcelUtil.ListToExcelFile(trees);
+        return in;
     }
 
 
