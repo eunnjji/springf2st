@@ -54,7 +54,9 @@
         </ul>
 
     </nav>
-
+    <script>
+        let treePosArray = new Array();
+    </script>
     <!-- Page Content -->
     <div id="content">
         <!--  사이드바 버튼-->
@@ -81,6 +83,12 @@
                     <td th:text="${treel.dist}"></td>
                     <td th:text="${treel.dbh}"></td>
                     <td th:text="${treel.height}"></td>
+                    <script>
+                        name = "[[${treel.tid}]]";
+                        l1 = parseFloat("[[${treel.latitude}]]");
+                        l2 = parseFloat("[[${treel.longitude}]]");
+                        treePosArray.push([name,l1,l2]);
+                    </script>
                 </tr>
             </table>
         </div>
