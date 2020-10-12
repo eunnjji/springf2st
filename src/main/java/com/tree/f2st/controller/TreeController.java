@@ -31,6 +31,7 @@ public class TreeController {
     @Autowired
     TreeService treeService;
 
+//-----Web
     @RequestMapping(value = "/map")
     public String home(Model model){
         model.addAttribute("treeList",treeService.findAll());
@@ -44,7 +45,13 @@ public class TreeController {
         return "index.html";
     }
 
+    @RequestMapping(value = "/other/{value}")
+    public String search(Model model, @PathVariable("value") String val){
+        model.addAttribute("pageValue", val);
+        return "index.html";
+    }
 
+//-----CRUD 외 Util
     //모든 나무 조회
     @GetMapping(value="/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<TreeEntity>> getAlltrees(){
@@ -76,11 +83,6 @@ public class TreeController {
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .body(file);
     }
-//    public void downloadXlsx(HttpServletResponse response) throws IOException{
-//        response.setContentType("application/octet-stream");
-//        response.setHeader("Content-Disposition", "attachment; filename=fist.xlsx");
-//        ByteArrayInputStream stream = ExcelUtil.ListToExcelFile(treeService.findAll());
-//        IOUtils.copy(stream, response.getOutputStream());
-//    }
+
 
 }

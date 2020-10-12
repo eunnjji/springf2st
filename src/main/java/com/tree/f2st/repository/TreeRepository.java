@@ -17,9 +17,9 @@ public interface TreeRepository extends JpaRepository<TreeEntity, Long> {
     //like검색 ~ pid #조사자
     public List<TreeEntity> findByPidLike(@Param("pid") String pid);
 
-    //위치검색
-
     //기간검색
+
+    //위치검색
 
 
 }

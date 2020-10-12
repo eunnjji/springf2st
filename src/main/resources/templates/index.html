@@ -35,7 +35,7 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Others</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="#">Page 1</a>
+                        <a th:href="@{'/webfist/other/1'}">Search</a>
                     </li>
                     <li>
                         <a href="#">Page 2</a>
@@ -91,6 +91,9 @@
                     </script>
                 </tr>
             </table>
+        </div>
+        <div th:if="${pageValue != null}">
+            <div th:if="${pageValue.equal}" th:include="/searchDay.html :: search Day" ></div>
         </div>
         <!--   아래 div에서 지도 삽입    -->
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=88ff6c3b6ab905ccc189478337342538"></script>
