@@ -26,8 +26,8 @@
             <li class="active">
                 <a href="#treeSubmenu" data-toggle="collapse" aria-expanded="false">Tree List</a>
                 <ul class="collapse list-unstyled" id="treeSubmenu">
-                    <div class="tree-group" th:each="test : ${treeList}">
-                        <li><a th:href="@{'/webfist/map/'+${test.tid}}" th:text="${test.tid}"></a></li>
+                    <div class="tree-group" th:each="tmp : ${treeList}">
+                        <li><a th:href="@{'/webfist/map/'+${tmp.tid}}" th:text="${tmp.tid}"></a></li>
                     </div>
                 </ul>
             </li>
@@ -35,7 +35,7 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Others</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a th:href="@{'/webfist/other/1'}">Search</a>
+                        <a th:href="@{'/webfist/map/other/'+${'1'}}">Search</a>
                     </li>
                     <li>
                         <a href="#">Page 2</a>
@@ -71,30 +71,61 @@
 
         <div th:if="${detail != null}" th:include="/detail.html :: detailfrag(${detail})"></div>
         <div th:unless="${detail != null}">
-            <table class="tb_tree">
-                <tr>
-                    <th>tid</th>
-                    <th>dist</th>
-                    <th>dbh</th>
-                    <th>height</th>
-                </tr>
-                <tr th:each="treel : ${treeList}">
-                    <td th:text="${treel.tid}"></td>
-                    <td th:text="${treel.dist}"></td>
-                    <td th:text="${treel.dbh}"></td>
-                    <td th:text="${treel.height}"></td>
-                    <script>
-                        name = "[[${treel.tid}]]";
-                        l1 = parseFloat("[[${treel.latitude}]]");
-                        l2 = parseFloat("[[${treel.longitude}]]");
-                        treePosArray.push([name,l1,l2]);
-                    </script>
-                </tr>
-            </table>
+
+            <div th:if="${pval != null}">
+                <div th:if="${#strings.equals(pval,'1')}" th:include="/searchDay.html :: searchfrag" ></div>
+            </div>
+
+            <div th:unless="${pval != null}">
+
+                <div th:if="${searchList != null}">
+                    <table class="tb_tree">
+                        <tr>
+                            <th>tid</th>
+                            <th>dist</th>
+                            <th>dbh</th>
+                            <th>height</th>
+                        </tr>
+                        <tr th:each="treel : ${searchList}">
+                            <td th:text="${treel.tid}"></td>
+                            <td th:text="${treel.dist}"></td>
+                            <td th:text="${treel.dbh}"></td>
+                            <td th:text="${treel.height}"></td>
+                            <script>
+                                name = "[[${treel.tid}]]";
+                                l1 = parseFloat("[[${treel.latitude}]]");
+                                l2 = parseFloat("[[${treel.longitude}]]");
+                                treePosArray.push([name,l1,l2]);
+                            </script>
+                        </tr>
+                    </table>
+                </div>
+
+                <div th:unless="${searchList != null}">
+                    <table class="tb_tree">
+                        <tr>
+                            <th>tid</th>
+                            <th>dist</th>
+                            <th>dbh</th>
+                            <th>height</th>
+                        </tr>
+                        <tr th:each="treel : ${treeList}">
+                            <td th:text="${treel.tid}"></td>
+                            <td th:text="${treel.dist}"></td>
+                            <td th:text="${treel.dbh}"></td>
+                            <td th:text="${treel.height}"></td>
+                            <script>
+                                name = "[[${treel.tid}]]";
+                                l1 = parseFloat("[[${treel.latitude}]]");
+                                l2 = parseFloat("[[${treel.longitude}]]");
+                                treePosArray.push([name,l1,l2]);
+                            </script>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div th:if="${pageValue != null}">
-            <div th:if="${pageValue.equal}" th:include="/searchDay.html :: search Day" ></div>
-        </div>
+
         <!--   아래 div에서 지도 삽입    -->
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=88ff6c3b6ab905ccc189478337342538"></script>
         <div id="map" style="width:800px;height:800px;"></div>

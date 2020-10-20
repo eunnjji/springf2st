@@ -45,9 +45,10 @@ public class TreeController {
         return "index.html";
     }
 
-    @RequestMapping(value = "/other/{value}")
-    public String search(Model model, @PathVariable("value") String val){
-        model.addAttribute("pageValue", val);
+    @RequestMapping(value = "/map/other/{value}")
+    public String search(Model model, @PathVariable("value") String value){
+        model.addAttribute("treeList",treeService.findAll());
+        model.addAttribute("pval", value);
         return "index.html";
     }
 
@@ -84,5 +85,39 @@ public class TreeController {
                 .body(file);
     }
 
+    @RequestMapping(value = "/delete/{tid}")
+    public String delete(Model model, @PathVariable("tid") String tid){
+        model.addAttribute("treeList",treeService.findAll());
+        System.out.println("========= Delete ....... ============");
+        treeService.deleteByTid(tid);
+        System.out.println("========= Delete Success =============");
+        return "redirect:/webfist/map";
+    }
+
+    @RequestMapping(value = "/map/search/{keyword}")
+    public String searchDate(Model model,@PathVariable("keyword") String keyword){
+        model.addAttribute("treeList",treeService.findAll());
+        System.out.println("===== Search 시도 ======");
+        String year = keyword.substring(0,2);
+        String month = keyword.substring(2,4);
+        String day = keyword.substring(4,6);
+
+        System.out.println(" year: "+year+", month: "+month+", day: "+day);
+
+        if(year.equals("00")) year = "__";
+        if(month.equals("00")) month = "__";
+        if(day.equals("00")) day = "__";
+
+        System.out.println(" year: "+year+", month: "+month+", day: "+day);
+        System.out.println();
+
+        List<TreeEntity> slist = treeService.searchByTid(year,month,day);
+        System.out.println("===== Search 컨트롤러 수행 완료 ======\n");
+
+        slist.forEach(e-> System.out.println(e.getTid()));
+        System.out.println("==== Result ====");
+        model.addAttribute("searchList",slist);
+        return "index.html";
+    }
 
 }

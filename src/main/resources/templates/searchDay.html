@@ -5,43 +5,96 @@
     <title>SearchDay</title>
 </head>
 <body>
-<div class="search Day" th:fragment="searchFrag">
-    <form>
-        <div class="form-group">
-            <label for="selectMonth">월</label>
-            <select class="form-control" id="selectMonth">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="selectDay">일</label>
-            <select class="form-control" id="selectDay">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
-            </select>
-        </div>
-    </form>
+<div class="search" th:fragment="searchfrag">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="inputYear">Year</label>
+                    <input type="number" class="form-control form-control-lg" id="inputYear"
+                           min="00" placeholder=" YY " maxlength="2" oninput="numlengthCheck(this)">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="selectMonth">Month</label>
+                    <select class="form-control form-control-lg" id="selectMonth">
+                        <option selected value="00">선택하세요</option>
+                        <option value="01">1</option>
+                        <option value="02">2</option>
+                        <option value="03">3</option>
+                        <option value="04">4</option>
+                        <option value="05">5</option>
+                        <option value="06">6</option>
+                        <option value="07">7</option>
+                        <option value="08">8</option>
+                        <option value="09">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputDay">Day</label>
+                    <input type="number" class="form-control form-control-lg" id="inputDay"
+                           min="00" max="31" placeholder=" 1 ~ 31 " maxlength="2"
+                           oninput="numlengthCheck(this)">
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="search-btn">Search</button>
+        </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var y, m, d;
+
+        $(document).ready(function () {
+            $('#search-btn').click( function (){
+                y = document.getElementById("inputYear").value;
+                m = document.getElementById("selectMonth").value;
+                d = document.getElementById("inputDay").value;
+
+                if(y === ""){
+                    y = "00";
+                }else{
+                    if(numCheck(y)){
+                        if(y.length<2){
+                            y = "0"+y;
+                        }
+                    }
+                }
+
+                if(d===""){
+                    d="00";
+                }else{
+                    if(numCheck(d)){
+                        if(d.length < 2){
+                            d = "0"+d;
+                        }
+                    }
+                }
+
+                var keyword = y+m+d;
+                location.href = "/webfist/map/search/" + keyword;
+            });
+        });
+
+        // 숫자 유효성 검사 (정규식 이용)
+        function numCheck(n){
+            num = String(n).replace(/^\s+|\s+$/g, "");
+            var regex = /^[0-9]$/g;
+            if(regex.test(num)){
+                num = num.replace(/,/g,"");
+                var numresult = isNaN(num) ? false : true;
+                return numresult;
+            }else{ return false; }
+        }
+
+        //input tag의 type이 number 일때 maxlength 작동이 안되는 문제
+        //oninput 속성 및 javascript 활용해 문제 해결
+        function numlengthCheck(e){
+         if(e.value.length > e.maxLength){
+             e.value = e.value.slice(0,e.maxLength);
+         }
+        }
+
+    </script>
 </div>
 </body>
 </html>

@@ -23,7 +23,6 @@
                 </tr>
                 <tr>
                     <td><b>latitude(위도)</b></td> <td th:text="${tree.latitude}"></td>
-
                 </tr>
                 <tr>
                     <td><b>longitude(경도)</b></td> <td th:text="${tree.longitude}"></td>
@@ -36,13 +35,44 @@
                 <button class="btn btn-primary btn-lg" type="button">UPDATE</button>
             </td>
             <td>
-                <button class="btn btn-secondary btn-lg" type="button">DELETE</button>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#exampleModalCenter">
+                    DELETE
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">DELETE TREE</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                정말로 삭제하시겠습니까?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                <button type="button" class="btn btn-primary" id="delBtn" >예</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
                 name = "[[${tree.tid}]]";
                 l1 = parseFloat("[[${tree.latitude}]]");
                 l2 = parseFloat("[[${tree.longitude}]]");
                 treePosArray.push([name,l1,l2]);
+
+                $(document).ready(function () {
+                    $('#delBtn').click( function (){
+                        location.href = "/webfist/delete/"+name;
+                    });
+                });
             </script>
         </th:block>
     </div>

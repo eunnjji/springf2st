@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.Console;
@@ -63,5 +66,13 @@ public class TreeService {
         return in;
     }
 
+    // jpa에서 mysql wildcard '_'가 정식으로 주어지지 않는 문제
+    // repository 에서 @query 어노테이션 에 파라미터 ?1을 활용함
+    // 성공적으로 검색 수행
+    public List<TreeEntity> searchByTid(String yy, String mm, String dd){
+        List<TreeEntity> t = new ArrayList<>();
+        treeRepository.findByTidStartingWith(yy+mm+dd+"%").forEach(e->t.add(e));
+        return t;
+    }
 
 }
