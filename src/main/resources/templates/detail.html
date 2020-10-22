@@ -10,42 +10,43 @@
             <table class="tb_tree">
                 <th><h3>Tree Detail</h3></th>
                 <tr>
-                    <td><b>tid</b></td> <td th:text="${tree.tid}"></td>
+                    <td><b>tid</b></td>
+                    <td th:text="${tree.tid}"></td>
                 </tr>
                 <tr>
-                    <td><b>dist</b></td> <td th:text="${tree.dist}"></td>
+                    <td><b>dist</b></td>
+                    <td id="dist-val" th:text="${tree.dist}"></td>
                 </tr>
                 <tr>
-                    <td><b>dbh</b></td> <td th:text="${tree.dbh}"></td>
+                    <td><b>dbh</b></td>
+                    <td id="dbh-val" th:text="${tree.dbh}"></td>
                 </tr>
                 <tr>
-                    <td><b>height</b></td> <td th:text="${tree.height}"></td>
+                    <td><b>height</b></td>
+                    <td id="height-val" th:text="${tree.height}"></td>
                 </tr>
                 <tr>
-                    <td><b>latitude(위도)</b></td> <td th:text="${tree.latitude}"></td>
+                    <td><b>latitude(위도)</b></td>
+                    <td id="lat-val" th:text="${tree.latitude}"></td>
                 </tr>
                 <tr>
-                    <td><b>longitude(경도)</b></td> <td th:text="${tree.longitude}"></td>
-                </tr>
-                <tr>
-                    <td><b>조사자</b></td> <td th:text="${tree.pid}"></td>
+                    <td><b>longitude(경도)</b></td>
+                    <td id="long-val" th:text="${tree.longitude}"></td>
                 </tr>
             </table>
-            <td>
-                <button class="btn btn-primary btn-lg" type="button">UPDATE</button>
-            </td>
-            <td>
+            <p></p>
+            <button class="btn btn-primary btn-lg" id="editbtn" type="button">UPDATE</button>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#exampleModalCenter">
+            <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#ModalCenter">
                     DELETE
-                </button>
+            </button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <!-- Modal -->
+            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">DELETE TREE</h5>
+                                <h5 class="modal-title" id="ModalCenterTitle">DELETE TREE</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -59,8 +60,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </td>
+            </div>
+
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
                 name = "[[${tree.tid}]]";
@@ -68,11 +69,70 @@
                 l2 = parseFloat("[[${tree.longitude}]]");
                 treePosArray.push([name,l1,l2]);
 
+                var editcheck = false;
+
                 $(document).ready(function () {
                     $('#delBtn').click( function (){
                         location.href = "/webfist/delete/"+name;
                     });
+
+                    $('#editbtn').click( function () {
+                        if(!editcheck){
+                            //각 td 를 input 타입으로 변경
+                            $('#dist-val').html("<td><input type=\"text\" class=\"form-control\"" +
+                                " id=\"dist-input\" value="+[[${tree.dist}]]+"></td>");
+                            $('#dbh-val').html("<td><input type=\"text\" class=\"form-control\"" +
+                                " id=\"dbh-input\" value="+[[${tree.dbh}]]+"></td>");
+                            $('#height-val').html("<td><input type=\"text\" class=\"form-control\"" +
+                                " id=\"height-input\" value="+[[${tree.height}]]+"></td>");
+                            $('#lat-val').html("<td><input type=\"text\" class=\"form-control\"" +
+                                " id=\"lat-input\" value="+[[${tree.latitude}]]+"></td>");
+                            $('#long-val').html("<td><input type=\"text\" class=\"form-control\"" +
+                                " id=\"long-input\" value="+[[${tree.longitude}]]+"></td>");
+                            editcheck = !editcheck;
+                            $(this).type
+                        }else{
+                            var newdist = document.getElementById("dist-input").value;
+                            var newdbh = document.getElementById("dbh-input").value;
+                            var newheight = document.getElementById("height-input").value;
+                            var newlat =  document.getElementById("lat-input").value;
+                            var newlongi = document.getElementById("long-input").value;
+
+                            var updateData = {
+                                "tid" : name,
+                                "dist" : newdist,
+                                "dbh" : newdbh,
+                                "height" : newheight,
+                                "latitude" : newlat,
+                                "longitude" : newlongi
+                            }
+
+                            //error
+                            //#1. Skipping URI variable 'tid' because request contains bind value with same name.
+                            // --> url의 @path~~를 제거
+                            //#2. controller 쪽에서 return 부분인 redirect로 계속 실패 (parsererror)
+                            // --> 전달하려던 data의 Type이 적절하게 작성되지 않았기 때문
+                            // --> dataType: "json" 제거 하거나 "text"로 변경 or data를 정확한 형태로 작성해야 함
+
+                            $.ajax({
+                                url:"/webfist/update/",
+                                type:"post",
+                                data: updateData,
+                                dataType: "text",
+                                success: function (data){
+                                    alert('성공!');
+                                    location.href = "/webfist/map/"+name;
+                                    editcheck = !editcheck;
+                                },
+                                error: function (request,e){
+                                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+e);
+                                }
+                            })
+                        }
+
+                    });
                 });
+
             </script>
         </th:block>
     </div>

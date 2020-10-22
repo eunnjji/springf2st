@@ -19,7 +19,7 @@
     <!-- Sidebar -->
     <nav id="sidebar">
 
-        <div class="sidebar-header"><h3>Web-Fist</h3></div>
+        <div class="sidebar-header"><h3>Web-FIST</h3></div>
 
         <ul class="list-unstyled components">
             <li><a th:href="@{'/webfist/map'}">Home</a></li>
@@ -35,13 +35,13 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Others</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a th:href="@{'/webfist/map/other/'+${'1'}}">Search</a>
+                        <a th:href="@{'/webfist/map/other/'+${'1'}}">Search Date</a>
                     </li>
                     <li>
-                        <a href="#">Page 2</a>
+                        <a th:href="@{'/webfist/map/other/'+${'2'}}">Search Place</a>
                     </li>
                     <li>
-                        <a href="#">Page 3</a>
+                        <a th:href="@{'/webfist/map/other/'+${'3'}}">About & Guide</a>
                     </li>
                 </ul>
             </li>
@@ -73,7 +73,9 @@
         <div th:unless="${detail != null}">
 
             <div th:if="${pval != null}">
-                <div th:if="${#strings.equals(pval,'1')}" th:include="/searchDay.html :: searchfrag" ></div>
+                <div th:if="${#strings.equals(pval,'1')}" th:include="/search.html :: search-Date-frag" ></div>
+                <div th:if="${#strings.equals(pval,'2')}" th:include="/search.html :: search-Place-frag"></div>
+                <div th:if="${#strings.equals(pval,'3')}" th:include="/about-guide.html :: about-guidefrag"></div>
             </div>
 
             <div th:unless="${pval != null}">
@@ -87,7 +89,7 @@
                             <th>height</th>
                         </tr>
                         <tr th:each="treel : ${searchList}">
-                            <td th:text="${treel.tid}"></td>
+                            <td> <a th:href="@{'/webfist/map/'+${treel.tid}}" th:text="${treel.tid}"></a></td>
                             <td th:text="${treel.dist}"></td>
                             <td th:text="${treel.dbh}"></td>
                             <td th:text="${treel.height}"></td>
@@ -125,7 +127,7 @@
                 </div>
             </div>
         </div>
-
+        <p></p><p></p>
         <!--   아래 div에서 지도 삽입    -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=88ff6c3b6ab905ccc189478337342538&libraries=clusterer"></script>

@@ -3,6 +3,7 @@ package com.tree.f2st.controller;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.tree.f2st.dto.TreeDTO;
 import com.tree.f2st.entity.TreeEntity;
+import com.tree.f2st.repository.TreeRepository;
 import com.tree.f2st.service.TreeService;
 import com.tree.f2st.util.ExcelUtil;
 import org.apache.commons.compress.utils.IOUtils;
@@ -38,6 +39,7 @@ public class TreeController {
         return "index.html";
     }
 
+    //나무 등록 번호로 하나의 나무 조회
     @RequestMapping(value = "/map/{tid}")
     public String detail(Model model, @PathVariable("tid") String tid){
         model.addAttribute("treeList",treeService.findAll());
@@ -57,13 +59,6 @@ public class TreeController {
     @GetMapping(value="/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<TreeEntity>> getAlltrees(){
         List<TreeEntity> tree = treeService.findAll();
-        return new ResponseEntity<List<TreeEntity>>(tree, HttpStatus.OK);
-    }
-
-    //나무 등록 번호로 하나의 나무 조회
-    @GetMapping(value="/{tid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody ResponseEntity< List<TreeEntity>> getTree(@PathVariable("tid") String tid){
-        List<TreeEntity> tree = treeService.findByTid(tid);
         return new ResponseEntity<List<TreeEntity>>(tree, HttpStatus.OK);
     }
 
@@ -118,6 +113,19 @@ public class TreeController {
         System.out.println("==== Result ====");
         model.addAttribute("searchList",slist);
         return "index.html";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public void update(Model model,@ModelAttribute TreeDTO tree){
+        model.addAttribute("treeList",treeService.findAll());
+        System.out.println("===== Data Receive ======");
+        System.out.println(tree.getTid());
+        System.out.println(tree.getDist());
+        System.out.println(tree.getDbh());
+        System.out.println("===== Update 시도 ======");
+        treeService.updateById(tree.getTid(),tree);
+        System.out.println("===== Update 성공 ======");
     }
 
 }

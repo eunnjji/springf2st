@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.Id;
 
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate // 변경된 필드만 update 하는 어노테이션
 @Table(name="tree")
 public class TreeEntity {
 
@@ -30,10 +32,10 @@ public class TreeEntity {
     private String dbh;
     @Column(name="height")
     private String height;
-    @Column(name="longitude")
-    private String longitude;
     @Column(name="latitude")
     private String latitude;
+    @Column(name="longitude")
+    private String longitude;
     @Column(name="pid")
     private String pid;
 
