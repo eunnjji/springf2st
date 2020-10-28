@@ -50,7 +50,6 @@
             <li>
                 <a th:href="@{'/webfist/download'}" class="download">Download Excel(.xlsx)</a>
             </li>
-
         </ul>
 
     </nav>
@@ -74,8 +73,9 @@
 
             <div th:if="${pval != null}">
                 <div th:if="${#strings.equals(pval,'1')}" th:include="/search.html :: search-Date-frag" ></div>
-                <div th:if="${#strings.equals(pval,'2')}" th:include="/search.html :: search-Place-frag"></div>
-                <div th:if="${#strings.equals(pval,'3')}" th:include="/about-guide.html :: about-guidefrag"></div>
+                <div th:if="${#strings.equals(pval,'2')}" th:include="/search.html :: search-Place-frag(${treeList})"></div>
+                <div th:if="${#strings.equals(pval,'3')}" th:include="/about-guide.html :: about-guidefrag">
+                </div>
             </div>
 
             <div th:unless="${pval != null}">

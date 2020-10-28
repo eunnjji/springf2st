@@ -82,9 +82,23 @@ public class TreeService {
     // jpa에서 mysql wildcard '_'가 정식으로 주어지지 않는 문제
     // repository 에서 @query 어노테이션 에 파라미터 ?1을 활용함
     // 성공적으로 검색 수행
-    public List<TreeEntity> searchByTid(String yy, String mm, String dd){
+    public List<TreeEntity> searchByTid(String keyword){
+        String year = keyword.substring(0,2);
+        String month = keyword.substring(2,4);
+        String day = keyword.substring(4,6);
+
+        System.out.println(" year: "+year+", month: "+month+", day: "+day);
+
+        if(year.equals("00")) year = "__";
+        if(month.equals("00")) month = "__";
+        if(day.equals("00")) day = "__";
+
+        System.out.println(" year: "+year+", month: "+month+", day: "+day);
+        System.out.println();
+
+
         List<TreeEntity> t = new ArrayList<>();
-        treeRepository.findByTidStartingWith(yy+mm+dd+"%").forEach(e->t.add(e));
+        treeRepository.findByTidStartingWith(year+month+day+"%").forEach(e->t.add(e));
         return t;
     }
 

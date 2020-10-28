@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.synth.SynthTabbedPaneUI;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -89,26 +90,12 @@ public class TreeController {
         return "redirect:/webfist/map";
     }
 
-    @RequestMapping(value = "/map/search/{keyword}")
+    @RequestMapping(value = "/search/date/{keyword}")
     public String searchDate(Model model,@PathVariable("keyword") String keyword){
         model.addAttribute("treeList",treeService.findAll());
         System.out.println("===== Search 시도 ======");
-        String year = keyword.substring(0,2);
-        String month = keyword.substring(2,4);
-        String day = keyword.substring(4,6);
-
-        System.out.println(" year: "+year+", month: "+month+", day: "+day);
-
-        if(year.equals("00")) year = "__";
-        if(month.equals("00")) month = "__";
-        if(day.equals("00")) day = "__";
-
-        System.out.println(" year: "+year+", month: "+month+", day: "+day);
-        System.out.println();
-
-        List<TreeEntity> slist = treeService.searchByTid(year,month,day);
+        List<TreeEntity> slist = treeService.searchByTid(keyword);
         System.out.println("===== Search 컨트롤러 수행 완료 ======\n");
-
         slist.forEach(e-> System.out.println(e.getTid()));
         System.out.println("==== Result ====");
         model.addAttribute("searchList",slist);
@@ -118,14 +105,12 @@ public class TreeController {
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public void update(Model model,@ModelAttribute TreeDTO tree){
-        model.addAttribute("treeList",treeService.findAll());
         System.out.println("===== Data Receive ======");
         System.out.println(tree.getTid());
         System.out.println(tree.getDist());
         System.out.println(tree.getDbh());
-        System.out.println("===== Update 시도 ======");
+        System.out.println("===== Update =====");
         treeService.updateById(tree.getTid(),tree);
-        System.out.println("===== Update 성공 ======");
     }
 
 }

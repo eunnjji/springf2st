@@ -13,7 +13,7 @@
                     <input type="number" class="form-control form-control-lg" id="inputYear"
                            min="00" placeholder=" YY " maxlength="2" oninput="numlengthCheck(this)">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label for="selectMonth">Month</label>
                     <select class="form-control form-control-lg" id="selectMonth">
                         <option selected value="00">선택하세요</option>
@@ -38,14 +38,14 @@
                            oninput="numlengthCheck(this)">
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="search-btn">Search</button>
+            <button type="button" class="btn btn-primary" id="search-date-btn">Search</button>
         </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         var y, m, d;
 
         $(document).ready(function () {
-            $('#search-btn').click( function (){
+            $('#search-date-btn').click( function (){
                 y = document.getElementById("inputYear").value;
                 m = document.getElementById("selectMonth").value;
                 d = document.getElementById("inputDay").value;
@@ -71,7 +71,7 @@
                 }
 
                 var keyword = y+m+d;
-                location.href = "/webfist/map/search/" + keyword;
+                location.href = "/webfist/search/date/" + keyword;
             });
         });
 
@@ -96,8 +96,52 @@
 
     </script>
 </div>
-<div class="search-place" th:fragment="search-Place-frag">
+<div class="search-place" th:fragment="search-Place-frag(treeList)">
+    <script>let tArray = new Array(); let resultArr = new Array();</script>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle-split" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        id="toggleSearchName" > option </button>
+                <div class="dropdown-menu" id="selectPlaceKeyword">
+                    <a class="dropdown-item" href="#1">지역</a>
+                    <a class="dropdown-item" href="#2">시</a>
+                    <a class="dropdown-item" href="#3">동(면)</a>
+                </div>
+            </div>
+        </div>
+        <input type="text" class="form-control" id="inputPlaceKeyword"
+               placeholder="형식에 맞게 입력해주세요. ex.시(도)->00 ,구 -> 00구, 동 -> 00동">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="search-place-btn">검색</button>
+        </div>
+    </div>
+    <div th:each="tmp : ${treeList}">
+        <script>
+            name = "[[${tmp.tid}]]";
+            l1 = parseFloat("[[${tmp.latitude}]]");
+            l2 = parseFloat("[[${tmp.longitude}]]");
+            tArray.push([name,l1,l2]);
+        </script>
+    </div>
+    <div id="resultdiv">
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=88ff6c3b6ab905ccc189478337342538&libraries=services"></script>
+    <script  type="text/javascript" src="/js/searchlogic.js"></script>
+    <script>
 
+         $(document).ready(function (e){
+            $('#selectPlaceKeyword').find('a').click(function (e){
+               e.preventDefault();
+               var cat = $(this).text();
+               $('#toggleSearchName').text(cat);
+            });
+
+         });
+
+    </script>
 </div>
 </body>
 </html>

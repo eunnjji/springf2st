@@ -26,8 +26,6 @@ public interface TreeRepository extends JpaRepository<TreeEntity, Long> {
     @Query("select t from TreeEntity t where t.tid like ?1")
     public List<TreeEntity> findByTidStartingWith(@Param("keyword") String keyword);
 
-    //위치검색
-
     //update
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update TreeEntity t set t.dist=?2 , t.dbh=?3, t.height=?4, t.latitude=?5, t.longitude=?6 "+
