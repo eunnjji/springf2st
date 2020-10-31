@@ -48,9 +48,30 @@ $.get("/webfist/", function(data) {
     // 클러스터러에 마커들을 추가합니다
 
     clusterer.addMarkers(markers);
+    clusterer.getMarkers().map(function (marker,index){
+        var infowindow = new  kakao.maps.InfoWindow({
+            content: '<div><blockquote  class="blockquote text-center"><p class="text-dark">'+data[index].tid+'</p></blockquote ></div>',
+            position : marker.position
+        });
+        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+    });
 });
 
 // 지도화면의 중심점을 최근 마지막 저장위치로 세팅
 const idx = positions.length-1;
 map.setCenter(positions[idx].latlng);
 
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
