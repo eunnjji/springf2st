@@ -10,7 +10,7 @@ var geocoder = new kakao.maps.services.Geocoder();
 
 spbtn.onclick = function (){
     resultDiv.innerHTML = '';
-    // var optname = $('#toggleSearchName').text();
+    treePosArray.length = 0;
     var optname = document.getElementById('toggleSearchName').innerText;
     switch (optname) {
         case "지역": tag = 1; break;
@@ -24,33 +24,38 @@ spbtn.onclick = function (){
     //#방법2
     tArray.forEach(function (tmp, i){
         var tname = tmp[0];
+        var tdist = tmp[3];
+        var tdbh = tmp[4];
+        var theight = tmp[5];
         geocoder.coord2Address(tmp[2],tmp[1],function(result, status){
            if(status === kakao.maps.services.Status.OK){
                switch (tag) {
                    case 1:
                        if(place === result[0].address.region_1depth_name){
-                           resultArr.push(tname);
-                           content += '<li class="list-group-item"><a href="/webfist/map/'+tname+'">'+ tname +'</a></li>';
+                           content += '<tr><td><a href="/webfist/map/'+tname+'">'+ tname +'</a></td>';
+                           content += '<td>'+tdist+'</td>'+'<td>'+tdbh+'</td>'+'<td>'+theight+'</td></tr>';
                        }
                        break;
                    case 2:
                        if(place === result[0].address.region_2depth_name){
-                           resultArr.push(tname);
-                           content += '<li class="list-group-item"><a href="/webfist/map/'+tname+'">'+ tname +'</a></li>';
+                           content += '<tr><td><a href="/webfist/map/'+tname+'">'+ tname +'</a></td>';
+                           content += '<td>'+tdist+'</td>'+'<td>'+tdbh+'</td>'+'<td>'+theight+'</td></tr>';
                        }
                        break;
                    case 3:
                        if(place === result[0].address.region_3depth_name)
                        {
-                           resultArr.push(tname);
-                           content += '<li class="list-group-item"><a href="/webfist/map/'+tname+'">'+ tname +'</a></li>';
+                           content += '<tr><td><a href="/webfist/map/'+tname+'">'+ tname +'</a></td>';
+                           content += '<td>'+tdist+'</td>'+'<td>'+tdbh+'</td>'+'<td>'+theight+'</td></tr>';
                        }
                        break;
                }
-               resultDiv.innerHTML = '<ul class="list-group">'+content+'</ul>';
+               resultDiv.innerHTML = '<table class="table table-sm table-borderless table-hover"><tr><th scope="col">tid</th>'
+                + '<th scope="col">dist</th><th scope="col">dbh</th><th scope="col">height</th></tr>'
+                +content+'</table>';
            }
         });
     });
 
-    resultArr.length = 0;
+    //resultArr.length = 0;
 }

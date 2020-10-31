@@ -74,19 +74,18 @@
             <div th:if="${pval != null}">
                 <div th:if="${#strings.equals(pval,'1')}" th:include="/search.html :: search-Date-frag" ></div>
                 <div th:if="${#strings.equals(pval,'2')}" th:include="/search.html :: search-Place-frag(${treeList})"></div>
-                <div th:if="${#strings.equals(pval,'3')}" th:include="/about-guide.html :: about-guidefrag">
-                </div>
+                <div th:if="${#strings.equals(pval,'3')}" th:include="/about-guide.html :: about-guidefrag"></div>
             </div>
 
             <div th:unless="${pval != null}">
 
                 <div th:if="${searchList != null}">
-                    <table class="tb_tree">
+                    <table class="table table-sm table-borderless table-hover">
                         <tr>
-                            <th>tid</th>
-                            <th>dist</th>
-                            <th>dbh</th>
-                            <th>height</th>
+                            <th scope="col">tid</th>
+                            <th scope="col">dist</th>
+                            <th scope="col">dbh</th>
+                            <th scope="col">height</th>
                         </tr>
                         <tr th:each="treel : ${searchList}">
                             <td> <a th:href="@{'/webfist/map/'+${treel.tid}}" th:text="${treel.tid}"></a></td>
@@ -104,15 +103,15 @@
                 </div>
 
                 <div th:unless="${searchList != null}">
-                    <table class="tb_tree">
+                    <table class="table table-sm table-borderless table-hover">
                         <tr>
-                            <th>tid</th>
-                            <th>dist</th>
-                            <th>dbh</th>
-                            <th>height</th>
+                            <th scope="col">tid</th>
+                            <th scope="col">dist</th>
+                            <th scope="col">dbh</th>
+                            <th scope="col">height</th>
                         </tr>
                         <tr th:each="treel : ${treeList}">
-                            <td th:text="${treel.tid}"></td>
+                            <td> <a th:href="@{'/webfist/map/'+${treel.tid}}" th:text="${treel.tid}"></a></td>
                             <td th:text="${treel.dist}"></td>
                             <td th:text="${treel.dbh}"></td>
                             <td th:text="${treel.height}"></td>
