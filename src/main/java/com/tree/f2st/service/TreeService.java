@@ -73,7 +73,7 @@ public class TreeService {
     }
 
 
-    public ByteArrayInputStream load() {
+    public ByteArrayInputStream download() {
         List<TreeEntity> trees = treeRepository.findAll();
         ByteArrayInputStream in = ExcelUtil.ListToExcelFile(trees);
         return in;

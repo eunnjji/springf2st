@@ -49,7 +49,7 @@ public class TreeController {
     }
 
     @RequestMapping(value = "/map/other/{value}")
-    public String search(Model model, @PathVariable("value") String value){
+    public String other(Model model, @PathVariable("value") String value){
         model.addAttribute("treeList",treeService.findAll());
         model.addAttribute("pval", value);
         return "index.html";
@@ -71,9 +71,9 @@ public class TreeController {
 
     //.xlsx file download
     @GetMapping(value = "/download")
-    public ResponseEntity<Resource> getFile() {
+    public ResponseEntity<Resource> downloadFile() {
         String filename = "fist.xlsx";
-        InputStreamResource file = new InputStreamResource(treeService.load());
+        InputStreamResource file = new InputStreamResource(treeService.download());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
@@ -104,7 +104,7 @@ public class TreeController {
 
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void update(Model model,@ModelAttribute TreeDTO tree){
+    public void update(@ModelAttribute TreeDTO tree){
         System.out.println("===== Data Receive ======");
         System.out.println(tree.getTid());
         System.out.println(tree.getDist());
